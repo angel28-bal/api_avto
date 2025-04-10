@@ -1,46 +1,63 @@
 package pet;
 
-import java.util.Arrays;
-import java.util.Collections;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import config.TestConfig;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.restassured.response.Response;
-import models.Category;
 import models.Pet;
-import models.Tag;
 import utils.ApiClient;
+import utils.TestDataGenerator;
 
 @Epic("Pet Store API")
 @Feature("Pet Management")
 public class PetCreateTest {
 
+    @BeforeAll
+    public static void init() {
+        TestConfig.setup();
+    }
+
     @Test
-    @Description("Создание питомца с корректными данными")
-    public void testCreatePetWithValidData() {
-        // Подготовка тестовых данных
-        Pet pet = new Pet("Doggie", "available");
-        pet.setCategory(new Category(1L, "Dogs"));
-        pet.setPhotoUrls(Collections.singletonList("http://example.com/dog.jpg"));
-        pet.setTags(Arrays.asList(new Tag(1L, "friendly"), new Tag(2L, "trained")));
-
-        // Отправка запроса
+    @Description("Создание нового питомца")
+    public void testCreatePet() {
+        Pet pet = TestDataGenerator.generateRandomPet();
         Response response = ApiClient.post("/pet", pet);
-
-        // Проверки
+        
         assertEquals(200, response.getStatusCode(), "Неверный статус код");
         
         Pet createdPet = response.as(Pet.class);
         assertNotNull(createdPet.getId(), "ID питомца не должен быть null");
         assertEquals(pet.getName(), createdPet.getName(), "Имя питомца не совпадает");
         assertEquals(pet.getStatus(), createdPet.getStatus(), "Статус питомца не совпадает");
+    }
+
+    @Test
+    @Description("Создание питомца без обязательных полей")
+    public void testCreatePetWithoutRequiredFields() {
+        Pet pet = new Pet();
+        pet.setId(1L);
+        // Не устанавливаем name и status
+        
+        Response response = ApiClient.post("/pet", pet);
+        assertEquals(405, response.getStatusCode(), "Ожидается код ошибки 405");
+    }
+    
+    @Test
+    @Description("Создание питомца с недопустимым статусом")
+    public void testCreatePetWithInvalidStatus() {
+        Pet pet = TestDataGenerator.generateRandomPet();
+        pet.setStatus("invalid_status");
+        
+        Response response = ApiClient.post("/pet", pet);
+        assertEquals(400, response.getStatusCode(), "Ожидается код ошибки 400");
     }
 
     @ParameterizedTest
@@ -53,14 +70,5 @@ public class PetCreateTest {
         assertEquals(200, response.getStatusCode(), "Неверный статус код");
         Pet createdPet = response.as(Pet.class);
         assertEquals(status, createdPet.getStatus(), "Статус питомца не совпадает");
-    }
-
-    @Test
-    @Description("Негативный тест: создание питомца без обязательных полей")
-    public void testCreatePetWithoutRequiredFields() {
-        Pet pet = new Pet();
-        Response response = ApiClient.post("/pet", pet);
-        
-        assertEquals(405, response.getStatusCode(), "Ожидается код ошибки 405");
     }
 } 

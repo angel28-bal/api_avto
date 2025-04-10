@@ -35,25 +35,31 @@ public class PetDeleteTest {
         
         Pet createdPet = createResponse.as(Pet.class);
         petId = createdPet.getId();
+        
+        // Проверяем, что питомец действительно создан
+        Response getResponse = ApiClient.get("/pet/" + petId);
+        assertEquals(200, getResponse.getStatusCode(), "Созданный питомец не найден");
     }
     
     @Test
     @Description("Удаление существующего питомца")
     public void testDeleteExistingPet() {
-        Response response = ApiClient.delete("/pet/" + petId);
+        // Проверяем, что питомец существует перед удалением
+        Response getResponse = ApiClient.get("/pet/" + petId);
+        assertEquals(200, getResponse.getStatusCode(), "Питомец не найден перед удалением");
         
+        Response response = ApiClient.delete("/pet/" + petId);
         assertEquals(200, response.getStatusCode(), "Неверный статус код при удалении");
         
         // Проверяем, что питомец действительно удален
-        Response getResponse = ApiClient.get("/pet/" + petId);
-        assertEquals(404, getResponse.getStatusCode(), "Питомец не был удален");
+        Response getResponseAfterDelete = ApiClient.get("/pet/" + petId);
+        assertEquals(404, getResponseAfterDelete.getStatusCode(), "Питомец не был удален");
     }
     
     @Test
     @Description("Попытка удаления несуществующего питомца")
     public void testDeleteNonExistingPet() {
         Response response = ApiClient.delete("/pet/999999999");
-        
         assertEquals(404, response.getStatusCode(), "Ожидается код 404 для несуществующего питомца");
     }
 }

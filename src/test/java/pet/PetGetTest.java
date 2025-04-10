@@ -1,21 +1,21 @@
 package pet;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+
 import config.TestConfig;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.restassured.response.Response;
 import models.Pet;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 import utils.ApiClient;
 import utils.TestDataGenerator;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @Epic("Pet Store API")
 @Feature("Pet Management")
@@ -38,6 +38,9 @@ public class PetGetTest {
         
         Pet createdPet = createResponse.as(Pet.class);
         petId = createdPet.getId();
+        
+        // Сохраняем имя питомца для последующих проверок
+        testPet.setName(createdPet.getName());
     }
     
     @Test
