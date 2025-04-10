@@ -19,7 +19,7 @@
         
         <!-- Версии зависимостей -->
         <rest-assured.version>5.3.0</rest-assured.version>
-        <allure.version>2.22.0</allure.version>
+        <allure.version>2.12.0</allure.version>
         <junit.version>5.9.1</junit.version>
         <jackson.version>2.15.2</jackson.version>
         <aspectj.version>1.9.19</aspectj.version>
@@ -52,14 +52,14 @@
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-junit5</artifactId>
-            <version>${allure.version}</version>
+            <version>2.12.0</version>
         </dependency>
 
         <!-- Allure REST Assured -->
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-rest-assured</artifactId>
-            <version>${allure.version}</version>
+            <version>2.12.0</version>
         </dependency>
     </dependencies>
 
@@ -95,7 +95,7 @@
             <plugin>
                 <groupId>io.qameta.allure</groupId>
                 <artifactId>allure-maven</artifactId>
-                <version>${allure.version}</version>
+                <version>2.12.0</version>
                 <configuration>
                     <reportVersion>${allure.version}</reportVersion>
                     <resultsDirectory>${project.build.directory}/allure-results</resultsDirectory>
