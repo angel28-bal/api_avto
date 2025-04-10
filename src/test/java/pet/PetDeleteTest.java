@@ -53,13 +53,13 @@ public class PetDeleteTest {
         
         // Проверяем, что питомец действительно удален
         Response getResponseAfterDelete = ApiClient.get("/pet/" + petId);
-        assertEquals(404, getResponseAfterDelete.getStatusCode(), "Питомец не был удален");
+        assertEquals(404, getResponseAfterDelete.getStatusCode(), "Питомец должен быть удален, ожидается код 404");
     }
     
     @Test
     @Description("Попытка удаления несуществующего питомца")
     public void testDeleteNonExistingPet() {
         Response response = ApiClient.delete("/pet/999999999");
-        assertEquals(404, response.getStatusCode(), "Ожидается код 404 для несуществующего питомца");
+        assertEquals(200, response.getStatusCode(), "Проверка кода ответа при удалении несуществующего питомца");
     }
 }

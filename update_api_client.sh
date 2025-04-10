@@ -1,3 +1,5 @@
+#!/bin/bash
+cat > src/main/java/utils/ApiClient.java << 'EOL'
 package utils;
 
 import io.restassured.RestAssured;
@@ -11,7 +13,6 @@ public class ApiClient {
     private static RequestSpecification getBaseSpec() {
         return RestAssured.given()
                 .baseUri(BASE_URL)
-                .header("api_key", "special-key")
                 .contentType("application/json");
     }
 
@@ -40,4 +41,4 @@ public class ApiClient {
                 .when()
                 .delete(endpoint);
     }
-}
+}EOL

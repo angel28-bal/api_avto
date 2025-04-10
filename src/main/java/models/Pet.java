@@ -80,4 +80,4 @@ public class Pet {
     public void setStatus(String status) {
         this.status = status;
     }
-} 
+}
