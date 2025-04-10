@@ -36,6 +36,7 @@ public class ApiClient {
 
     public static Response delete(String endpoint) {
         return getBaseSpec()
+                .header("api_key", "special-key")
                 .when()
                 .delete(endpoint);
     }
