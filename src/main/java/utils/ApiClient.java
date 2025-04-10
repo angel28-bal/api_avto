@@ -1,26 +1,42 @@
-      package utils;
+package utils;
 
-      import io.restassured.response.Response;
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
 
-      import static io.restassured.RestAssured.given;
+public class ApiClient {
 
-      public class ApiClient {
+    private static final String BASE_URL = "https://petstore.swagger.io/v2";
 
-          private static final String BASE_URL = "https://petstore.swagger.io/v2";
+    private static RequestSpecification getBaseSpec() {
+        return RestAssured.given()
+                .baseUri(BASE_URL)
+                .contentType("application/json");
+    }
 
-          public static Response get(String endpoint) {
-              return given().baseUri(BASE_URL).get(endpoint);
-          }
+    public static Response get(String endpoint) {
+        return getBaseSpec()
+                .when()
+                .get(endpoint);
+    }
 
-          public static Response post(String endpoint, Object body) {
-              return given().baseUri(BASE_URL).body(body).post(endpoint);
-          }
+    public static Response post(String endpoint, Object body) {
+        return getBaseSpec()
+                .body(body)
+                .when()
+                .post(endpoint);
+    }
 
-          public static Response put(String endpoint, Object body) {
-              return given().baseUri(BASE_URL).body(body).put(endpoint);
-          }
+    public static Response put(String endpoint, Object body) {
+        return getBaseSpec()
+                .body(body)
+                .when()
+                .put(endpoint);
+    }
 
-          public static Response delete(String endpoint) {
-              return given().baseUri(BASE_URL).delete(endpoint);
-          }
-      }
+    public static Response delete(String endpoint) {
+        return getBaseSpec()
+                .when()
+                .delete(endpoint);
+    }
+}
