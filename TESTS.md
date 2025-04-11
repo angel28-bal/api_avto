@@ -15,7 +15,7 @@ allure generate target/allure-results -o target/allure-report
 5. Открытие отчета в браузере:
 allure open target/allure-report
 
-6.Также прилржен скрин с aller отчетом.
+6. Также прилржен скрин с aller отчетом.
 
 Описание автотестов PetStore API
 
