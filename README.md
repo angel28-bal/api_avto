@@ -23,3 +23,6 @@ https://petstore.swagger.io
 3. Проект должен включать тесты, проверяющие работу методов GET, POST, PUT и DELETE.
 
 Можно расширить стек, при этом обязательный набор, указанный выше, должен быть включён в каждый из вариантов.
+
+ For this sample, you can use the api key special-key to test the authorization filters.
+
