@@ -1,25 +1,19 @@
 package utils;
 
 import config.TestConfig;
+import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
 // Класс для работы с API PetStore
 public class ApiClient {
 
-    // Инициализация конфигурации при загрузке класса
-    static {
-        TestConfig.setup();
-    }
-
     // Создает базовую спецификацию запроса
     private static RequestSpecification getBaseSpec() {
-        RequestSpecification spec = TestConfig.getSpec();
-        if (spec == null) {
+        if (RestAssured.requestSpecification == null) {
             TestConfig.setup();
-            spec = TestConfig.getSpec();
         }
-        return spec;
+        return RestAssured.given();
     }
 
     // Отправляет GET запрос

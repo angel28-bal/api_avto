@@ -18,7 +18,7 @@
         
         <!-- Версии зависимостей -->
         <rest-assured.version>5.5.1</rest-assured.version>
-        <allure.version>2.29.1</allure.version>
+        <allure.version>2.24.0</allure.version>
         <junit.version>5.10.2</junit.version>
         <jackson.version>2.16.1</jackson.version>
         <aspectj.version>1.9.23</aspectj.version>
@@ -58,14 +58,14 @@
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-junit5</artifactId>
-            <version>2.12.0</version>
+            <version>${allure.version}</version>
         </dependency>
 
         <!-- Allure REST Assured -->
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-rest-assured</artifactId>
-            <version>2.12.0</version>
+            <version>${allure.version}</version>
         </dependency>
     </dependencies>
 
@@ -75,11 +75,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M7</version>
+                <version>3.2.5</version>
                 <configuration>
                     <argLine>
                         -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
-                        -Dallure.results.directory=${project.build.directory}/allure-results
                     </argLine>
                     <systemProperties>
                         <property>
@@ -106,8 +105,39 @@
                     <reportVersion>${allure.version}</reportVersion>
                     <resultsDirectory>${project.build.directory}/allure-results</resultsDirectory>
                     <reportDirectory>${project.build.directory}/allure-report</reportDirectory>
-                    <cleanResultsDirectory>true</cleanResultsDirectory>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Maven Exec Plugin для автоматического открытия отчета -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>open-allure-report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>allure</executable>
+                            <arguments>
+                                <argument>open</argument>
+                                <argument>${project.build.directory}/allure-report</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
             <!-- Maven Compiler Plugin -->
