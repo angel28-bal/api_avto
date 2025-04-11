@@ -16,15 +16,18 @@ import models.Pet;
 import utils.ApiClient;
 import utils.TestDataGenerator;
 
+// Тесты для создания питомцев в системе
 @Epic("Pet Store API")
 @Feature("Pet Management")
 public class PetCreateTest {
 
+    // Инициализация тестового окружения
     @BeforeAll
     public static void init() {
         TestConfig.setup();
     }
 
+    // Тест создания нового питомца с валидными данными
     @Test
     @Description("Создание нового питомца")
     public void testCreatePet() {
@@ -39,6 +42,7 @@ public class PetCreateTest {
         assertEquals(pet.getStatus(), createdPet.getStatus(), "Статус питомца не совпадает");
     }
 
+    // Тест создания питомца без обязательных полей (name и status)
     @Test
     @Description("Создание питомца без обязательных полей")
     public void testCreatePetWithoutRequiredFields() {
@@ -54,6 +58,7 @@ public class PetCreateTest {
         assertNotNull(createdPet.getId(), "ID питомца не должен быть null");
     }
     
+    // Тест создания питомца с недопустимым значением статуса
     @Test
     @Description("Создание питомца с недопустимым статусом")
     public void testCreatePetWithInvalidStatus() {
@@ -70,6 +75,7 @@ public class PetCreateTest {
         assertEquals("invalid_status", createdPet.getStatus(), "Статус питомца должен соответствовать отправленному");
     }
 
+    // Параметризованный тест создания питомцев с разными допустимыми статусами
     @ParameterizedTest
     @ValueSource(strings = {"available", "pending", "sold"})
     @Description("Создание питомца с разными статусами")

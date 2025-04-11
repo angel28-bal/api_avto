@@ -4,29 +4,41 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+// Модель питомца в магазине
 public class Pet {
+    // Уникальный идентификатор питомца
     @JsonProperty
     private Long id;
     
+    // Категория питомца
     @JsonProperty
     private Category category;
     
+    // Имя питомца
     @JsonProperty
     private String name;
     
+    // Список URL фотографий питомца
     @JsonProperty
     private List<String> photoUrls;
     
+    // Список тегов питомца
     @JsonProperty
     private List<Tag> tags;
     
+    // Статус питомца (available, pending, sold)
     @JsonProperty
     private String status;
 
     // Конструктор по умолчанию
     public Pet() {}
 
-    // Конструктор с параметрами
+    /**
+     * Создает нового питомца с указанными параметрами.
+     * 
+     * @param name имя питомца
+     * @param status статус питомца
+     */
     public Pet(String name, String status) {
         this.name = name;
         this.status = status;

@@ -2,29 +2,42 @@ package models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+// Модель заказа в магазине питомцев
 public class Order {
+    // Уникальный идентификатор заказа
     @JsonProperty
     private Long id;
     
+    // Идентификатор заказанного питомца
     @JsonProperty
     private Long petId;
     
+    // Количество заказанных питомцев
     @JsonProperty
     private Integer quantity;
     
+    // Дата доставки заказа
     @JsonProperty
     private String shipDate;
     
+    // Статус заказа (placed, approved, delivered)
     @JsonProperty
-    private String status; // placed, approved, delivered
+    private String status;
     
+    // Флаг завершенности заказа
     @JsonProperty
     private Boolean complete;
 
     // Конструктор по умолчанию
     public Order() {}
 
-    // Конструктор с параметрами
+    /**
+     * Создает новый заказ с указанными параметрами.
+     * 
+     * @param petId идентификатор заказываемого питомца
+     * @param quantity количество питомцев
+     * @param status статус заказа
+     */
     public Order(Long petId, Integer quantity, String status) {
         this.petId = petId;
         this.quantity = quantity;

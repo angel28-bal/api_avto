@@ -2,35 +2,56 @@ package models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Модель пользователя магазина.
+ * Содержит информацию о пользователе системы.
+ */
 public class User {
+    // Уникальный идентификатор пользователя
     @JsonProperty
     private Long id;
     
+    // Имя пользователя (логин)
     @JsonProperty
     private String username;
     
+    // Имя пользователя
     @JsonProperty
     private String firstName;
     
+    // Фамилия пользователя
     @JsonProperty
     private String lastName;
     
+    // Email пользователя
     @JsonProperty
     private String email;
     
+    // Пароль пользователя
     @JsonProperty
     private String password;
     
+    // Телефон пользователя
     @JsonProperty
     private String phone;
     
+    // Статус пользователя
     @JsonProperty
     private Integer userStatus;
 
     // Конструктор по умолчанию
     public User() {}
 
-    // Конструктор с основными параметрами
+     /**
+     * Создает нового пользователя с указанными параметрами.
+     * 
+     * @param username имя пользователя (логин)
+     * @param firstName имя
+     * @param lastName фамилия
+     * @param email email
+     * @param password пароль
+     */
+
     public User(String username, String firstName, String lastName, String email, String password) {
         this.username = username;
         this.firstName = firstName;

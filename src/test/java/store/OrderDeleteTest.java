@@ -1,5 +1,10 @@
 package store;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import config.TestConfig;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
@@ -7,25 +12,23 @@ import io.qameta.allure.Feature;
 import io.restassured.response.Response;
 import models.Order;
 import models.Pet;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import utils.ApiClient;
 import utils.TestDataGenerator;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+// Тесты для удаления заказов
 @Epic("Pet Store API")
 @Feature("Store Management")
 public class OrderDeleteTest {
     
     private Long orderId;
     
+    // Инициализация тестового окружения
     @BeforeAll
     public static void init() {
         TestConfig.setup();
     }
     
+    // Подготовка тестовых данных перед каждым тестом
     @BeforeEach
     public void setUp() {
         // Создаем питомца для заказа
@@ -41,6 +44,7 @@ public class OrderDeleteTest {
         orderId = orderResponse.as(Order.class).getId();
     }
     
+    // Тест удаления существующего заказа
     @Test
     @Description("Удаление существующего заказа")
     public void testDeleteExistingOrder() {
@@ -54,6 +58,7 @@ public class OrderDeleteTest {
             "Заказ все еще доступен после удаления");
     }
     
+    // Тест попытки удаления несуществующего заказа
     @Test
     @Description("Попытка удаления несуществующего заказа")
     public void testDeleteNonExistingOrder() {

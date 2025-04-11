@@ -14,6 +14,7 @@ import models.Pet;
 import utils.ApiClient;
 import utils.TestDataGenerator;
 
+// Тесты для удаления питомцев из системы
 @Epic("Pet Store API")
 @Feature("Pet Management")
 public class PetDeleteTest {
@@ -21,11 +22,13 @@ public class PetDeleteTest {
     private Pet testPet;
     private Long petId;
     
+    // Инициализация тестового окружения
     @BeforeAll
     public static void init() {
         TestConfig.setup();
     }
     
+    // Подготовка тестовых данных перед каждым тестом
     @BeforeEach
     public void setUp() {
         // Создаем тестового питомца
@@ -41,6 +44,7 @@ public class PetDeleteTest {
         assertEquals(200, getResponse.getStatusCode(), "Созданный питомец не найден");
     }
     
+    // Тест удаления существующего питомца с проверкой результата
     @Test
     @Description("Удаление существующего питомца")
     public void testDeleteExistingPet() {
@@ -56,6 +60,7 @@ public class PetDeleteTest {
         assertEquals(404, getResponseAfterDelete.getStatusCode(), "Питомец должен быть удален, ожидается код 404");
     }
     
+    // Тест попытки удаления несуществующего питомца
     @Test
     @Description("Попытка удаления несуществующего питомца")
     public void testDeleteNonExistingPet() {

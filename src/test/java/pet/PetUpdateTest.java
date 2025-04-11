@@ -1,20 +1,21 @@
 package pet;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import config.TestConfig;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.restassured.response.Response;
 import models.Pet;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import utils.ApiClient;
 import utils.TestDataGenerator;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
+// Тесты для обновления информации о питомцах
 @Epic("Pet Store API")
 @Feature("Pet Management")
 public class PetUpdateTest {
@@ -22,11 +23,13 @@ public class PetUpdateTest {
     private Pet testPet;
     private Long petId;
     
+    // Инициализация тестового окружения
     @BeforeAll
     public static void init() {
         TestConfig.setup();
     }
     
+    // Подготовка тестовых данных перед каждым тестом
     @BeforeEach
     public void setUp() {
         // Создаем тестового питомца
@@ -36,36 +39,35 @@ public class PetUpdateTest {
         
         Pet createdPet = createResponse.as(Pet.class);
         petId = createdPet.getId();
-        testPet.setId(petId);
     }
     
+    // Тест обновления существующего питомца
     @Test
-    @Description("Обновление имени и статуса существующего питомца")
+    @Description("Обновление информации о существующем питомце")
     public void testUpdateExistingPet() {
-        // Изменяем данные питомца
-        String newName = "Updated " + testPet.getName();
-        String newStatus = "sold";
-        testPet.setName(newName);
-        testPet.setStatus(newStatus);
+        // Создаем обновленные данные для питомца
+        Pet updatedPet = TestDataGenerator.generateRandomPet();
+        updatedPet.setId(petId);
         
-        // Отправляем запрос на обновление
-        Response updateResponse = ApiClient.put("/pet", testPet);
+        Response response = ApiClient.put("/pet", updatedPet);
         
-        // Проверяем результат
-        assertEquals(200, updateResponse.getStatusCode(), "Неверный статус код при обновлении");
+        assertEquals(200, response.getStatusCode(), "Неверный статус код");
         
-        Pet updatedPet = updateResponse.as(Pet.class);
-        assertNotNull(updatedPet, "Обновленный питомец не должен быть null");
-        assertEquals(newName, updatedPet.getName(), "Имя питомца не обновилось");
-        assertEquals(newStatus, updatedPet.getStatus(), "Статус питомца не обновился");
+        Pet retrievedPet = response.as(Pet.class);
+        assertNotNull(retrievedPet, "Обновленный питомец не должен быть null");
+        assertEquals(petId, retrievedPet.getId(), "ID питомца не совпадает");
+        assertEquals(updatedPet.getName(), retrievedPet.getName(), "Имя питомца не обновилось");
     }
     
+    // Тест попытки обновления несуществующего питомца
     @Test
     @Description("Попытка обновления несуществующего питомца")
     public void testUpdateNonExistingPet() {
-        testPet.setId(999999999L);
-        Response updateResponse = ApiClient.put("/pet", testPet);
+        Pet nonExistingPet = TestDataGenerator.generateRandomPet();
+        nonExistingPet.setId(999999999L);
         
-        assertEquals(404, updateResponse.getStatusCode(), "Ожидается код 404 для несуществующего питомца");
+        Response response = ApiClient.put("/pet", nonExistingPet);
+        
+        assertEquals(404, response.getStatusCode(), "Ожидается код 404 для несуществующего питомца");
     }
 }

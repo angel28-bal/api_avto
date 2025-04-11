@@ -1,29 +1,32 @@
 package user;
 
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
 import config.TestConfig;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.restassured.response.Response;
 import models.User;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
 import utils.ApiClient;
 
-import java.util.Arrays;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+// Тесты для создания пользователей в системе
 @Epic("Pet Store API")
 @Feature("User Management")
 public class UserCreateTest {
     
+    // Инициализация тестового окружения
     @BeforeAll
     public static void init() {
         TestConfig.setup();
     }
     
+    // Тест создания пользователя с валидными данными
     @Test
     @Description("Создание пользователя с корректными данными")
     public void testCreateUserWithValidData() {
@@ -39,6 +42,7 @@ public class UserCreateTest {
         assertEquals(200, response.getStatusCode(), "Неверный статус код");
     }
     
+    // Тест создания нескольких пользователей одним запросом
     @Test
     @Description("Создание нескольких пользователей одним запросом")
     public void testCreateUsersWithArray() {
@@ -51,6 +55,7 @@ public class UserCreateTest {
         assertEquals(200, response.getStatusCode(), "Неверный статус код");
     }
     
+    // Тест создания пользователя с некорректным email
     @Test
     @Description("Создание пользователя с некорректным email")
     public void testCreateUserWithInvalidEmail() {

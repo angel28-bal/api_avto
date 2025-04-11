@@ -17,6 +17,7 @@ import models.Pet;
 import utils.ApiClient;
 import utils.TestDataGenerator;
 
+// Тесты для получения информации о питомцах
 @Epic("Pet Store API")
 @Feature("Pet Management")
 public class PetGetTest {
@@ -24,11 +25,13 @@ public class PetGetTest {
     private Pet testPet;
     private Long petId;
     
+    // Инициализация тестового окружения
     @BeforeAll
     public static void init() {
         TestConfig.setup();
     }
     
+    // Подготовка тестовых данных перед каждым тестом
     @BeforeEach
     public void setUp() {
         // Создаем тестового питомца
@@ -43,6 +46,7 @@ public class PetGetTest {
         testPet.setName(createdPet.getName());
     }
     
+    // Тест получения существующего питомца
     @Test
     @Description("Получение питомца по существующему ID")
     public void testGetExistingPet() {
@@ -56,6 +60,7 @@ public class PetGetTest {
         assertEquals(testPet.getName(), retrievedPet.getName(), "Имя питомца не совпадает");
     }
     
+    // Тест попытки получения несуществующего питомца
     @Test
     @Description("Попытка получения питомца по несуществующему ID")
     public void testGetNonExistingPet() {
@@ -64,6 +69,7 @@ public class PetGetTest {
         assertEquals(404, response.getStatusCode(), "Ожидается код 404 для несуществующего питомца");
     }
     
+    // Тест поиска питомцев по статусу
     @ParameterizedTest
     @ValueSource(strings = {"available", "pending", "sold"})
     @Description("Поиск питомцев по статусу")

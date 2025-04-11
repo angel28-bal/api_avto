@@ -1,5 +1,11 @@
 package store;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import config.TestConfig;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
@@ -7,15 +13,10 @@ import io.qameta.allure.Feature;
 import io.restassured.response.Response;
 import models.Order;
 import models.Pet;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import utils.ApiClient;
 import utils.TestDataGenerator;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
+// Тесты для получения информации о заказах в магазине
 @Epic("Pet Store API")
 @Feature("Store Management")
 public class OrderGetTest {
@@ -23,11 +24,13 @@ public class OrderGetTest {
     private Long orderId;
     private Order testOrder;
     
+    // Инициализация тестового окружения
     @BeforeAll
     public static void init() {
         TestConfig.setup();
     }
     
+    // Подготовка тестовых данных перед каждым тестом
     @BeforeEach
     public void setUp() {
         // Создаем питомца для заказа
@@ -43,6 +46,7 @@ public class OrderGetTest {
         orderId = orderResponse.as(Order.class).getId();
     }
     
+    // Тест получения существующего заказа по ID
     @Test
     @Description("Получение существующего заказа по ID")
     public void testGetExistingOrder() {
@@ -57,6 +61,7 @@ public class OrderGetTest {
         assertEquals(testOrder.getStatus(), retrievedOrder.getStatus(), "Статус заказа не совпадает");
     }
     
+    // Тест попытки получения несуществующего заказа
     @Test
     @Description("Попытка получения несуществующего заказа")
     public void testGetNonExistingOrder() {
@@ -66,6 +71,7 @@ public class OrderGetTest {
             "Ожидается код 404 при запросе несуществующего заказа");
     }
     
+    // Тест получения информации об инвентаре магазина
     @Test
     @Description("Получение информации об инвентаре магазина")
     public void testGetInventory() {

@@ -1,5 +1,11 @@
 package store;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import config.TestConfig;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
@@ -7,26 +13,23 @@ import io.qameta.allure.Feature;
 import io.restassured.response.Response;
 import models.Order;
 import models.Pet;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import utils.ApiClient;
 import utils.TestDataGenerator;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
+// Тесты для создания заказов в магазине
 @Epic("Pet Store API")
 @Feature("Store Management")
 public class OrderCreateTest {
     
     private Long petId;
     
+    // Инициализация тестового окружения
     @BeforeAll
     public static void init() {
         TestConfig.setup();
     }
     
+    // Подготовка тестовых данных перед каждым тестом
     @BeforeEach
     public void setUp() {
         // Создаем питомца для заказа
@@ -37,6 +40,7 @@ public class OrderCreateTest {
         petId = createResponse.as(Pet.class).getId();
     }
     
+    // Тест создания заказа с корректными данными
     @Test
     @Description("Создание заказа с корректными данными")
     public void testCreateOrderWithValidData() {
@@ -53,6 +57,7 @@ public class OrderCreateTest {
         assertEquals("placed", createdOrder.getStatus(), "Статус заказа не совпадает");
     }
     
+    // Тест создания заказа с некорректным ID питомца
     @Test
     @Description("Создание заказа с некорректным ID питомца")
     public void testCreateOrderWithInvalidPetId() {
@@ -63,6 +68,7 @@ public class OrderCreateTest {
             "Ожидается код 400 при создании заказа с несуществующим питомцем");
     }
     
+    // Тест создания заказа с некорректным количеством
     @Test
     @Description("Создание заказа с некорректным количеством")
     public void testCreateOrderWithInvalidQuantity() {
